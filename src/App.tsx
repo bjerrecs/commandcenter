@@ -1,25 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+
+import { useAuth0 } from "@auth0/auth0-react";
+import { Routes, Route } from "react-router-dom";
+import NoPage from './pages/NoPage';
+import Home from './pages/Home';
+import LoginPage from './pages/LoginPage';
+import { CallbackPage } from "./pages/callback-page";
+import { PageLoader } from "./components/page-loader";
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
+
+  const { isLoading } = useAuth0();
+
+  if (isLoading) {
+    return (
+      <div className="page-layout">
+        <PageLoader />
+      </div>
+    );
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/callback" element={<CallbackPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="*" element={<NoPage />} />
+      </Routes>
   );
 }
 
